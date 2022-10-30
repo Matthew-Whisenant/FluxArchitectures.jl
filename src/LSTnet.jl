@@ -77,15 +77,15 @@ timesteps, `LSTNet` expects an input size of `(31, 6, 1, 1000)`.
 Takes the keyword arguments `init` for the initialization of the recurrent
 layers; and `initW` and `bias` for the initialization of the dense layer.
 """
-function LSTnet(in::Integer, convlayersize::Integer, recurlayersize::Integer, poolsize::Integer, skiplength::Integer, σ=Flux.relu;
+function LSTnet(in::Integer, out::Integer, convlayersize::Integer, recurlayersize::Integer, poolsize::Integer, skiplength::Integer, σ=Flux.relu;
 	init=Flux.glorot_uniform, initW=Flux.glorot_uniform, bias=true)
 
 	CL = Chain(Conv((in, poolsize), 1 => convlayersize, σ),
 			a -> dropdims(a, dims=(1, 2)))
 	RL = Seq(ReluGRU(convlayersize, recurlayersize; init=init))
 	RSL = SkipGRU(convlayersize, recurlayersize, skiplength; init=init)
-	RD = Chain(Dense(2 * recurlayersize, 1, identity))
-	AL = Chain(a -> a[:,end,1,:], Dense(in, 1, identity; init=initW, bias=bias))
+	RD = Chain(Dense(2 * recurlayersize, out, identity))
+	AL = Chain(a -> a[:,end,1,:], Dense(in, out, identity; init=initW, bias=bias))
 
     LSTnetCell(CL, RL, RSL, RD, AL)
 end
