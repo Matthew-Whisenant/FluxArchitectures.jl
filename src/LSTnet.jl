@@ -60,8 +60,8 @@ mutable struct LSTnetCell{A,B,C,D,G}
 end
 
 """
-    LSTnet(in, convlayersize, recurlayersize, poolsize, skiplength)
-    LSTnet(in, convlayersize, recurlayersize, poolsize, skiplength, Flux.relu)
+    LSTnet(in, out, convlayersize, recurlayersize, poolsize, skiplength)
+    LSTnet(in, out, convlayersize, recurlayersize, poolsize, skiplength, Flux.relu)
 
 Create a LSTnet layer based on the architecture described in
 [Lai et. al.](https://arxiv.org/abs/1703.07015). `in` specifies the number of
